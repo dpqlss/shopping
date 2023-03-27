@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -9,20 +15,20 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-// app이 초기화 되면 auth를 이용하여 getAuth를 가지고 옴
 const auth = getAuth();
-//provider를 이용하여 아래의 signInWithPopup을 이용함
 const provider = new GoogleAuthProvider();
 
-//어플리케이션에서 로그인이 필요할때 firebase의 코드에서
-//아래의 로그인을 호출해줄거임
 export function login() {
-  // 사용자가 로그인을 클릭할때 아래의 코드를 호출함
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      //사용자의 정보는 user 안에 들어옴
-      const user = result.user;
-      console.log(user);
-    })
-    .catch(console.error);
+  signInWithPopup(auth, provider).catch(console.error);
+}
+
+export function logout() {
+  signOut(auth).catch(console.error);
+}
+
+export function onUserStateChange(callback) {
+  //firebase에 AuthState가 변경이 되면 전달받은 callback함수를 호출해준다
+  onAuthStateChanged(auth, (user) => {
+    callback(user);
+  });
 }
