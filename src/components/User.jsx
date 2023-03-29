@@ -2,17 +2,14 @@ import React from "react";
 
 const User = ({ user: { photoURL, displayName } }) => {
   return (
-    <div className="flex items-center">
+    // shrink란? 화면의 좌우가 줄어들면 이미지가 눌러지는데
+    //줄어들지말라고 shrink를 사용해줌
+    <div className="flex items-center shrink-0">
       <img
         className="w-10 h-10 rounded-full mr-2"
         src={photoURL}
         alt={displayName}
       />
-      {/*
-      반응형도 생각했을 때
-      displayName은 항상 숨어져 있어줘
-      하지만 md 사이즈부터는 block 요소로 나타나도 돼
-      */}
       <span className="hidden md:block">{displayName}</span>
     </div>
   );
