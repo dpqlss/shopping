@@ -7,7 +7,6 @@ import Button from "./ui/Button";
 import { useAuthContext } from "./context/AuthContext";
 
 const Navbar = () => {
-  //useAuthContext에 접근하여 데이터를 가지고 올거임
   const { user, login, logout } = useAuthContext();
 
   return (
@@ -19,7 +18,6 @@ const Navbar = () => {
       <nav className="flex items-center gap-4 font-semibold">
         <Link to="/products">Products</Link>
         {user && <Link to="/carts">Carts</Link>}
-        {/* user가 있으면 user가 isAdmin이 true인 경우에만 글쓰기 아이콘이 보여져라 */}
         {user && user.isAdmin && (
           <Link to="/products/new" className="text-2xl">
             <BsFillPencilFill />

@@ -5,9 +5,7 @@ import { useAuthContext } from "../components/context/AuthContext";
 const ProtectedRoute = ({ children, requireAdmin }) => {
   const { user } = useAuthContext();
 
-  //만약에 사용자가 없거나 어드민이 필요로한데 사용자가 isAdmin이 아닌 경우라면
   if (!user || (requireAdmin && !user.isAdmin)) {
-    //home으로 돌아가라
     return <Navigate to="/" replace />;
   }
 
