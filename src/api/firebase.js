@@ -53,18 +53,29 @@ async function adminUser(user) {
     });
 }
 
-//제품의 대한 정보와 이미지URL을 받아오겠다
+//제품의 대한 정보와 이미지URL을 받아오기
 export async function addNewProduct(product, image) {
   const id = uuid();
-  // 레퍼런스 결정해야하고 기존의 데이터베이스를 그대로 사용할거임
-  // 데이터베이스 중에서도 products에 추가해줄거임
-  // products 중에서도 id라는 key에 우리의 제품을 정보를 등록해줄거임
-  // uuid로 고유한 아이디 받아와서 고유한 아이디 안에 제품의 정보 등록하기
-  set(ref(database, `products/${id}`), {
+  return set(ref(database, `products/${id}`), {
     ...product,
     id,
     price: parseInt(product.price),
     image,
     options: product.options.split(","),
   });
+}
+
+//새로운 제품 불러오기
+export async function getProducts() {
+  //get과 ref를 이용하여 database 지정해주고 제품을 불러온다
+  //then을 이용해서 snapshotd을 받아옴
+  // 만약에 snapshot이 존재한다면 객체의 값들을 val()형태로 가져온다
+  return get(ref(database, "products")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object.values(snapshot.val());
+      }
+      // snapshot 없다면 텅텅 빈 배열을 return 해준다
+      return [];
+    });
 }

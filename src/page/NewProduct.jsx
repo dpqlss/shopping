@@ -6,6 +6,8 @@ import Button from "../components/ui/Button";
 const NewProduct = () => {
   const [product, setProduct] = useState({});
   const [file, setFile] = useState();
+  const [isUpoloading, setIsUploading] = useState(false);
+  const [success, setSuccess] = useState();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -19,18 +21,32 @@ const NewProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //업로드 이미지를 사용할것이고 선택한 파일을 먼저 업로드 한 다음
-    uploadImage(file).then((url) => {
-      console.log("url", url);
-      addNewProduct(product, url);
-      //Firebase에 새로운 제품을 추가함
-    });
+    setIsUploading(true);
+    uploadImage(file) //
+      .then((url) => {
+        addNewProduct(product, url) //
+          .then(() => {
+            setSuccess("성공적으로 제품이 추가되었습니다");
+            setTimeout(() => {
+              setSuccess(null);
+            }, 4000);
+          });
+      })
+      .finally(() => setIsUploading(false));
   };
 
   return (
-    <section>
-      {file && <img src={URL.createObjectURL(file)} alt="local file" />}
-      <form onSubmit={handleSubmit}>
+    <section className="w-full text-center">
+      <h2 className="text 2xl font-bold my-4">새로운 제품 등록</h2>
+      {success && <p className="my-2">✅{success}</p>}
+      {file && (
+        <img
+          className="w-96 mx-auto mb-2"
+          src={URL.createObjectURL(file)}
+          alt="local file"
+        />
+      )}
+      <form className="flex flex-col px-12" onSubmit={handleSubmit}>
         <input
           type="file"
           accept="image/*"
@@ -77,7 +93,10 @@ const NewProduct = () => {
           required
           onChange={handleChange}
         />
-        <Button text={"제품 등록하기"} />
+        <Button
+          text={isUpoloading ? "업로등중..." : "제품등록하기"}
+          disabled={isUpoloading}
+        />
       </form>
     </section>
   );

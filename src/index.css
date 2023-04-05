@@ -9,18 +9,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /*
-  @apply를 이용하여 flex의 방향은 수직으로 되게 만들고
-  넓이가 넓어지면 왼쪽이 아니라 중간으로 body가 이동한다
-  */
   @apply flex flex-col items-center;
 }
-
-/* 
-body아래에 root라는 태그를 가지면 
-@apply를 할건데 넓이를 기본적으로 가득 채우지만
-최대 넓이를 scree-2xl을 넘기지 않도록 지정해주겠다 
-*/
 #root {
   @apply w-full max-w-screen-2xl
 }
@@ -28,4 +18,8 @@ body아래에 root라는 태그를 가지면
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input {
+  @apply p-4 outline-none border border-gray-300 my-1
 }
