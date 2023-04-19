@@ -27,9 +27,9 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "/products/:id", ement: <ProductDetail /> },
+      { path: "/products/:id", element: <ProductDetail /> },
       {
-        path: "/cart",
+        path: "/carts",
         element: (
           <ProtectedRoute>
             <MyCart />

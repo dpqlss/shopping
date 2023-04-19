@@ -1,14 +1,25 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product: { id, image, title, category, price } }) => {
+const ProductCard = ({
+  product,
+  product: { id, image, title, category, price },
+}) => {
+  const navigate = useNavigate();
+
   return (
-    <li className="rounded-lg shadow-md overflow-hidden cursor-pointer">
+    <li
+      onClick={() => {
+        navigate(`/products/${id}`, { state: { product } });
+      }}
+      className="overflow-hidden transition-all rounded-lg shadow-md cursor-pointe hover:scale-105"
+    >
       <img className="w-full" src={image} alt={title} />
-      <div className="mt-2 px-2 text-lg flex justify-between item-center">
+      <div className="flex justify-between px-2 mt-2 text-lg item-center">
         <h3 className="trumcate">{title}</h3>
         <p>{`₩${price}`}</p>
       </div>
-      <p className="mb-2 px-2 text-gray-600">{category}</p>
+      <p className="px-2 mb-2 text-gray-600">{category}</p>
     </li>
   );
 };

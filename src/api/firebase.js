@@ -7,7 +7,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getDatabase, ref, set, get } from "firebase/database";
+import { getDatabase, ref, set, get, remove } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -45,7 +45,6 @@ async function adminUser(user) {
     .then((snapshot) => {
       if (snapshot.exists()) {
         const admins = snapshot.val();
-        console.log(admins);
         const isAdmin = admins.includes(user.uid);
         return { ...user, isAdmin };
       }
@@ -78,4 +77,23 @@ export async function getProducts() {
       // snapshot 없다면 텅텅 빈 배열을 return 해준다
       return [];
     });
+}
+
+//특정한 사용자의 쇼핑카트 읽어오기
+export async function getCart(userId) {
+  return get(ref(database, `carts/${userId}`)) //
+    .then((snapshot) => {
+      const items = snapshot.val() || {};
+      return Object.values(items);
+    });
+}
+
+//특정한 사용자의 상품 추가하기, 업데이트하기
+export async function addOrUpdateToCart(userId, product) {
+  return set(ref(database, `carts/${userId}/${product.id}`), product);
+}
+
+//특정한 사용자의 상품 삭제하기
+export async function removeFromCart(userId, productId) {
+  return remove(ref(database, `carts/${userId}/${productId}`));
 }
